@@ -17,6 +17,13 @@ body{
 	text-align: center;
 }
 
+.header h1{
+	color: #003975;
+	margin: 10px;
+	font-size: 40pt;
+	font-weight: bold;
+}
+
 header{
     width: 100%;;
     background-color: #003975;
@@ -48,7 +55,6 @@ header div{
 /* ************************************ */
 .citta{
 	margin-top:16px;
-	border:1px solid #bbb;
 	text-align:center;
 	padding:16px;
 	font-weight:bold;
