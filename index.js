@@ -17,6 +17,21 @@ $(document).ready(function(){
 
 	let btnPrenota = $("#Prenota")
 
+	$("#btnLogin").on("click", function(){
+		window.location.href = "login.html"
+	})
+	
+	$("#btnHome").on("click", function(){
+		window.location.href = "index.html"
+	})
+
+	let utente = JSON.parse(sessionStorage.getItem('utente'));
+    if (utente && utente.citta) {
+        console.log(utente.citta); // Ora dovresti avere accesso alla proprietà 'citta'
+    } else {
+        console.log("Dati dell'utente non disponibili");
+    }
+
 	let rq = inviaRichiesta("GET", "server/elencoCitta.php")
 	rq.catch(errore)
 	rq.then(function(response){

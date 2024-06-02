@@ -16,7 +16,7 @@ header span{
     color: white;
 }
 
-header button{
+header button, header img{
     margin: 15px;
     float: right;
 }
@@ -35,7 +35,7 @@ h2{
 }
 
 input{
-    width: 35%;
+    width: 45%;
     margin: 5px;
     border: 2px solid black;
     border-radius: 3px;

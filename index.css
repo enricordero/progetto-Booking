@@ -5,9 +5,12 @@ body{
     justify-content:flex-start;
     align-items: center;
     height: 100vh;
+	background-color: aliceblue;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 /* ************************************ */
+
 .header{
     font-size: 30pt;
     font-family: fantasy;
@@ -15,8 +18,28 @@ body{
 	text-align:center;
 }
 
-.header img{
-    height: 160px;
+header{
+    width: 100%;;
+    background-color: #003975;
+}
+
+header span{
+    font-size: 18pt;
+    padding: 20px;  
+    float: left;
+    color: white;
+}
+
+header button, header img{
+    margin: 15px;
+    float: right;
+}
+
+header div{
+	margin-top: 25px;
+	margin-right: 10px;
+    float: right;
+	color: white;
 }
 
 /* ************************************ */
