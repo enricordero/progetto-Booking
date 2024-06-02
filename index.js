@@ -16,20 +16,21 @@ $(document).ready(function(){
 	let txtNumPersone = $("#txtNumPersone")
 
 	let btnPrenota = $("#Prenota")
-
+	
 	$("#btnLogin").on("click", function(){
 		window.location.href = "login.html"
 	})
-	
+
 	$("#btnHome").on("click", function(){
 		window.location.href = "index.html"
 	})
 
-	let utente = JSON.parse(sessionStorage.getItem('utente'));
-    if (utente && utente.citta) {
-        console.log(utente.citta); // Ora dovresti avere accesso alla proprietà 'citta'
+	let utente = JSON.parse(sessionStorage.getItem('utente'))
+    if (utente) {
+		$("#pfp").prop("src", "img/utenti/" + utente[0]["imgProfilo"])
+		$("#nomeUtente").text(utente[0]["username"])
     } else {
-        console.log("Dati dell'utente non disponibili");
+        console.log("Dati dell'utente non disponibili")
     }
 
 	let rq = inviaRichiesta("GET", "server/elencoCitta.php")
@@ -37,14 +38,17 @@ $(document).ready(function(){
 	rq.then(function(response){
 		response.data.forEach(item => {
 			let divCitta = $("<div>").addClass("form-check form-check-inline").appendTo(sezCitta)
-			$("<input>").prop({
+			/*$("<input>").prop({
 				"type": "radio",
 				"name": "inlineRadioOptions",
 				"id": "inlineRadio" + item["id"],
 				"value": "option" + item["id"]
-			}).appendTo(divCitta)
+			})*/
+			$("<div>").text(item["citta"])
+			.appendTo(divCitta)
 			.on("click", function(){
 				sezHotel.empty()
+				vetCitta = []
 				let citta = item["citta"]
 				rq = inviaRichiesta("GET", "server/elencoHotel.php", {citta})
 				rq.catch(errore)
@@ -70,7 +74,6 @@ $(document).ready(function(){
 					});
 				})
 			})
-			$("<label>").addClass("form-check-label").prop("for", "inlineRadio"+item["id"]).text(item["citta"]).appendTo(divCitta)
 		});
 	})
 
@@ -108,35 +111,6 @@ $(document).ready(function(){
 	})
 
 	btnPrenota.on("click", function(){
-		/*let tipoStanza = ""
-		switch (txtNumPersone.val()) {
-			case 1:
-				tipoStanza = "singola"
-				break;
-			case 2:
-				tipoStanza = "doppia"
-				break;
-			case 3:
-				tipoStanza = "tripla"
-				break;
-			case 5:
-				tipoStanza = "suite"
-				break;
-			default:
-				break;
-		}
-		let prenotazione = {
-			"codUtente": 9,
-			"dataInizio": inputDataInizio.val(),
-			"dataFine": inputDataFine.val(),
-			"nPersone": txtNumPersone.val(),
-			"prezzoPerPersona": "",
-			"tipoStanza": tipoStanza
-		}
-		rq = inviaRichiesta("POST", "aggiornaPrenotazioni.php", {prenotazione})
-		rq.catch(errore)
-		rq.then(function(){
-			alert("Prenotazione eseguita")
-		})*/
+		alert("prenota")
 	})
 });

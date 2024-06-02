@@ -6,8 +6,8 @@ $conn = apriConnessione();
 $citta = getValidParameter("citta", $conn);
 
 $sql = "SELECT * 
-        FROM hotel";
-        //WHERE citta = $citta"; vorrei farlo così ma non funziona
+        FROM hotel
+        WHERE citta = '$citta'";
 $data = eseguiQuery($conn, $sql);
 
 http_response_code(200);

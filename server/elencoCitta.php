@@ -5,6 +5,7 @@ $conn = apriConnessione();
 
 $sql = "SELECT * 
         FROM citta";
+
 $data = eseguiQuery($conn, $sql);
 
 http_response_code(200);

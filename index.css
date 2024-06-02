@@ -13,9 +13,8 @@ body{
 
 .header{
     font-size: 30pt;
-    font-family: fantasy;
     color:rgb(137, 172, 223);
-	text-align:center;
+	text-align: center;
 }
 
 header{
@@ -33,6 +32,10 @@ header span{
 header button, header img{
     margin: 15px;
     float: right;
+}
+
+#pfp{
+	border-radius: 50%;
 }
 
 header div{
