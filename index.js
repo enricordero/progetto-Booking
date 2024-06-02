@@ -16,7 +16,7 @@ $(document).ready(function(){
 	let txtNumPersone = $("#txtNumPersone")
 
 	let btnPrenota = $("#Prenota")
-	
+
 	$("#btnLogin").on("click", function(){
 		window.location.href = "login.html"
 	})
