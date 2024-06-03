@@ -21,7 +21,7 @@ header button, header img{
     float: right;
 }
 
-#loginSection{
+#loginSection, #registerSection{
     text-align: center;
     background-color: white;
     border-radius: 10px;
@@ -36,6 +36,7 @@ h2{
 
 input{
     width: 45%;
+    height: 30px;
     margin: 5px;
     border: 2px solid black;
     border-radius: 3px;
@@ -46,11 +47,11 @@ input:hover{
     border: 2px solid rgb(255, 156, 70);
 }
 
-#username, #password, button[type=button], a{
+.username, .password, .inputcitta, button[type=button], a, .username2, .password2{
     margin: 5px;
 }
 
-#message{
+.message{
     color: red;
     margin-bottom: 0px;
 }

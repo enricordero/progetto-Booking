@@ -17,6 +17,8 @@ $(document).ready(function(){
 
 	let btnPrenota = $("#Prenota")
 
+	//TODO: add langhe.jpg as a background
+
 	$("#btnLogin").on("click", function(){
 		window.location.href = "login.html"
 	})
@@ -27,8 +29,12 @@ $(document).ready(function(){
 
 	let utente = JSON.parse(sessionStorage.getItem('utente'))
     if (utente) {
-		$("#pfp").prop("src", "img/utenti/" + utente[0]["imgProfilo"])
 		$("#nomeUtente").text(utente[0]["username"])
+		if(!utente[0]["imgProfilo"])
+			$("#pfp").prop("src", "img/utenti/defaultIMG.png")
+		else{
+			$("#pfp").prop("src", "img/utenti/" + utente[0]["imgProfilo"])
+		}
     } else {
         console.log("Dati dell'utente non disponibili")
     }

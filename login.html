@@ -26,19 +26,40 @@
 <body>
     <div id="loginSection">
         <img src="img/bookingLogo.png" height="80px">
-        <h2>Inserisci i tuoi dati</h2>
+        <h2>Accedi</h2>
         <i class="fa fa-user"></i>
-        <input type="text" placeholder="Username" id="username" height="30px" required>
+        <input type="text" placeholder="Username" class="username" required>
         <br>
         <i class="fa fa-lock"></i>
-        <input type="password" placeholder="Password" id="password" height="30px" required>
+        <input type="password" placeholder="Password" class="password" required>
         <br>
         <button type="button" id="btnLogin" class="btn btn-primary"> Accedi </button>
         <br>
-        <p id="message"> Manone </p>
-        <a href=""> Password dimenticata </a>
+        <p class="message"> Manone </p>
+        <a href="#"> Password dimenticata </a>
         <br>
-        <a href=""> Non hai un account? Clicca qui per registrarti! </a>
+        <a href="#" id="registrati"> Non hai un account? Clicca qui per registrarti! </a>
+    </div>
+
+    <div id="registerSection">
+        <img src="img/bookingLogo.png" height="80px">
+        <h2>Registrati</h2>
+        <i class="fa fa-user"></i>
+        <input type="text" placeholder="Username*" class="username2" required>
+        <br>
+        <i class="fa fa-lock"></i>
+        <input type="password" placeholder="Password*" class="password2" required>
+        <br>
+        <i class="fa fa-home"></i>
+        <input type="text" placeholder="Città*" class="inputcitta" required>
+        <br>
+        <i class="fa fa-phone"></i>
+        <input type="text" placeholder="Numero di telefono" class="telefono">
+        <br>
+        <button type="button" id="btnRegistrati" class="btn btn-primary"> Registrati </button>
+        <br>
+        <p class="message"> Manone </p>
+        <a href=""> Accedi → </a>
     </div>
 </body>
 
