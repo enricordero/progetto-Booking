@@ -23,7 +23,7 @@ header button, header img{
 
 #loginSection, #registerSection{
     text-align: center;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.6);
     border-radius: 10px;
     width: 55%;
     margin: 10px;

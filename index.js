@@ -60,7 +60,7 @@ $(document).ready(function(){
 			div.append($("<span>").text(item["citta"] + " "))	
 			div.append($("<img>").prop("src", "img/italianFlag.png"))
 			div.on("mouseenter", function(){
-				$(this).css("scale", "1.05")
+				$(this).css("scale", "1.02")
 			})
 			div.on("mouseout", function(){
 				$(this).css("scale", "1.00")
@@ -78,8 +78,11 @@ $(document).ready(function(){
 						}
 					});
 					vetCitta.forEach(hotel => {
-						let divEsterno = $("<div>").appendTo(sezHotel)
-						$("<img>").prop("src", "img/hotels/"+hotel["img"]).appendTo(divEsterno)
+						let divEsterno = $("<div>").css({
+							"background-color": "rgba(255, 255, 255, 0.8)",
+							"border-radius": "10px",
+						}).appendTo(sezHotel)
+						$("<img>").prop("src", "img/hotels/"+hotel["img"]).css("border-radius", "15px").appendTo(divEsterno)
 						let divInterno = $("<div>").appendTo(divEsterno)
 						let h4 = $("<h4>").appendTo(divInterno)
 						$("<span>").text(hotel["nomeHotel"]).appendTo(h4)
