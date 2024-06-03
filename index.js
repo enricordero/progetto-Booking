@@ -106,6 +106,7 @@ $(document).ready(function(){
 	function vediDettagli(hotel){
 		sezione2.hide()
 		sezione3.show()
+		$("#nomeHotel").text(hotel["nomeHotel"]).css("text-align", "center")
 		$("<h3>").text(hotel["nomeHotel"]).appendTo(sezDettagli)
 		$("<p>").text(hotel["indirizzo"] + " - " + hotel["CAP"] + " " + hotel["citta"]).appendTo(sezDettagli)
 		let div1 = $("<div>").appendTo(sezDettagli)
@@ -119,14 +120,66 @@ $(document).ready(function(){
 		})
 		let div2 = $("<div>").appendTo(sezDettagli)
 		$("<p>").text(hotel["descrizione"]).appendTo(div2)
-		$("<h3>").text("Tariffe").appendTo(div2)
+
+		//#region caratteristiche hotel
+		$("<b>").text("Wi-Fi ").appendTo(div2)
+		if(hotel["wifi"] == 1){
+			$("<img>").prop("src", "img/greenCheck.png").css({"width": "20px", "height": "20px"}).appendTo(div2)
+			$("<br>").appendTo(div2)
+		}
+		else if(hotel["wifi"] == 0){
+			$("<img>").prop("src", "img/redCheck.png").css({"width": "20px", "height": "20px"}).appendTo(div2)
+			$("<br>").appendTo(div2)
+		}
+		$("<b>").text("Piscina ").appendTo(div2)
+		if(hotel["piscina"] == 1){
+			$("<img>").prop("src", "img/greenCheck.png").css({"width": "20px", "height": "20px"}).appendTo(div2)
+			$("<br>").appendTo(div2)
+		}
+		else if(hotel["piscina"] == 0){
+			$("<img>").prop("src", "img/redCheck.png").css({"width": "20px", "height": "20px"}).appendTo(div2)
+			$("<br>").appendTo(div2)
+		}
+		$("<b>").text("SPA ").appendTo(div2)
+		if(hotel["spa"] == 1){
+			$("<img>").prop("src", "img/greenCheck.png").css({"width": "20px", "height": "20px"}).appendTo(div2)
+			$("<br>").appendTo(div2)
+		}
+		else if(hotel["spa"] == 0){
+			$("<img>").prop("src", "img/redCheck.png").css({"width": "20px", "height": "20px"}).appendTo(div2)
+			$("<br>").appendTo(div2)
+		}
+		$("<b>").text("Colazione ").appendTo(div2)
+		if(hotel["colazioneInclusa"] == 1){
+			$("<img>").prop("src", "img/greenCheck.png").css({"width": "20px", "height": "20px"}).appendTo(div2)
+			$("<br>").appendTo(div2)
+		}
+		else if(hotel["colazioneInclusa"] == 0){
+			$("<img>").prop("src", "img/redCheck.png").css({"width": "20px", "height": "20px"}).appendTo(div2)
+			$("<br>").appendTo(div2)
+		}
+		$("<b>").text("Cena ").appendTo(div2)
+		if(hotel["cenaInclusa"] == 1){
+			$("<img>").prop("src", "img/greenCheck.png").css({"width": "20px", "height": "20px"}).appendTo(div2)
+			$("<br>").appendTo(div2)
+		}
+		else if(hotel["cenaInclusa"] == 0){
+			$("<img>").prop("src", "img/redCheck.png").css({"width": "20px", "height": "20px"}).appendTo(div2)
+			$("<br>").appendTo(div2)
+		}
+		//#endregion
+
 		rq = inviaRichiesta("GET", "server/getTariffe.php", {codHotel})
 		rq.catch(errore)
 		rq.then(function(response){
-			console.log(response.data)
-			response.data.forEach(tariffa => {
-				$("<p>").text("dal " + tariffa["dataInizio"] + " al " + tariffa["dataFine"] + " al prezzo di " + tariffa["prezzo"] + "€").appendTo(div2)
-			});
+			if(response.data.length != 0){
+				$("<br>").appendTo(div2)
+				$("<h3>").text("Tariffe").appendTo(div2)
+				console.log(response.data)
+				response.data.forEach(tariffa => {
+					$("<p>").text("dal " + tariffa["dataInizio"] + " al " + tariffa["dataFine"] + " al prezzo di " + tariffa["prezzo"] + "€").appendTo(div2)
+				});
+			}
 		})
 	}
 
