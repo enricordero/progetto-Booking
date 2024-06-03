@@ -190,7 +190,7 @@ $(document).ready(function(){
 	function sweetAlertMappa(hotel){
 		console.log(hotel)
 		Swal.fire({
-			title: `<h4>${hotel["nomeHotel"]}</h4>`,
+			title: `<h3>${hotel["nomeHotel"]}</h3>`,
 			showCloseButton: true,
 			showConfirmButton: false,
 			width: '600px',
@@ -200,7 +200,7 @@ $(document).ready(function(){
 			<br>
 			<div id='divMap' width='500' height='500' style='margin: 0 auto;'></div>
 			`,
-			/*didOpen: function(){
+			didOpen: function(){
 				let mapContainer = document.getElementById("divMap");
 				mapContainer.style.width = '500px';
 				mapContainer.style.height = '500px';
@@ -211,18 +211,34 @@ $(document).ready(function(){
 						let pos = results[0]["geometry"]["location"];
 						let mapOptions = {
 							center: pos,
-							zoom: 14
+							zoom: 15,
+							styles: [
+								{
+							   "featureType": "poi",
+							   "stylers": [
+								{ "visibility": "off" }
+							   ]
+								}
+							   ]
+							   
 						};
-						if (mapContainer.offsetWidth > 0 && mapContainer.offsetHeight > 0) {
-							let map = new google.maps.Map(mapContainer, mapOptions);
-						} else {
-							console.error('Map container is not visible or has zero size.');
-						}
+
+						let map = new google.maps.Map(document.getElementById('divMap'), mapOptions);
+
+						let marker = new google.maps.Marker({
+							position: pos,
+							map: map,
+							title: hotel["nomeHotel"],
+							icon: "img/hotelMarker.png",
+							animation: google.maps.Animation.DROP
+						});
+
 					} else {
 						alert("Error: address not found");
 					}
 				});
-			}*/
+			},
+			background: "rgba(255, 255, 255, 0.98)"
 		})
 	}
 
