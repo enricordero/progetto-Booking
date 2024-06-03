@@ -90,12 +90,16 @@ $(document).ready(function(){
 							$("<img>").prop("src", "img/star.png").css("margin", "1px").appendTo(h4)
 						}
 						$("<p>").text(hotel["descrizione"]).appendTo(divInterno)
+
 						$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-primary").text("Dettagli")
 						.on("click", function(){ vediDettagli(hotel) }).appendTo(divInterno)
+
 						$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-primary").text("Recensioni")
 						.on("click", function(){ alert("recensioni") }).appendTo(divInterno)
-						$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-primary").text("Location")
-						.on("click", function(){ alert("Geolocation") }).appendTo(divInterno)
+
+						$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-info").text("Location")
+						.on("click", async function(){ await sweetAlertMappa(hotel) }).appendTo(divInterno)
+
 						$("<p>Prezzi a partire da </p>").append($("<span>").text("80€").addClass("prezzo")).appendTo(divInterno)
 					});
 				})
@@ -180,6 +184,45 @@ $(document).ready(function(){
 					$("<p>").text("dal " + tariffa["dataInizio"] + " al " + tariffa["dataFine"] + " al prezzo di " + tariffa["prezzo"] + "€").appendTo(div2)
 				});
 			}
+		})
+	}
+
+	function sweetAlertMappa(hotel){
+		console.log(hotel)
+		Swal.fire({
+			title: `<h4>${hotel["nomeHotel"]}</h4>`,
+			showCloseButton: true,
+			showConfirmButton: false,
+			width: '600px',
+			html: `
+			<div><b>Indirizzo:</b> ${hotel["citta"]}, ${hotel["indirizzo"]}</div>
+			<div><b>Stelle:</b> ${hotel["stelle"]} </div>
+			<br>
+			<div id='divMap' width='500' height='500' style='margin: 0 auto;'></div>
+			`,
+			/*didOpen: function(){
+				let mapContainer = document.getElementById("divMap");
+				mapContainer.style.width = '500px';
+				mapContainer.style.height = '500px';
+			
+				let geocoder = new google.maps.Geocoder();
+				geocoder.geocode({ address: `${hotel["citta"]}, ${hotel["indirizzo"]}` }, function (results, status) {
+					if (status == google.maps.GeocoderStatus.OK) {
+						let pos = results[0]["geometry"]["location"];
+						let mapOptions = {
+							center: pos,
+							zoom: 14
+						};
+						if (mapContainer.offsetWidth > 0 && mapContainer.offsetHeight > 0) {
+							let map = new google.maps.Map(mapContainer, mapOptions);
+						} else {
+							console.error('Map container is not visible or has zero size.');
+						}
+					} else {
+						alert("Error: address not found");
+					}
+				});
+			}*/
 		})
 	}
 

@@ -80,17 +80,17 @@ header div{
 .hotel>div>div h4 span{
 	color:#00C;
 	font-weight:bold;
-	font-size:1em;
+	font-size:30px;
 	vertical-align:middle;
 	margin-right:5px;
 }
 .hotel>div>div h4 img{
-	width:24px;
+	width:28px;
 	margin:-2px;
 	vertical-align:middle;
 }
 .hotel>div>div p{
-	font-size:0.8em;	
+	font-size: 18px;	
 }
 .hotel>div>div a{
 	float:right;
