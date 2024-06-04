@@ -180,7 +180,6 @@ $(document).ready(function(){
 			if(response.data.length != 0){
 				$("<br>").appendTo(div2)
 				$("<h3>").text("Tariffe").appendTo(div2)
-				console.log(response.data)
 				response.data.forEach(tariffa => {
 					$("<p>").text("dal " + tariffa["dataInizio"] + " al " + tariffa["dataFine"] + " al prezzo di " + tariffa["prezzo"] + "€").appendTo(div2)
 				});
@@ -189,7 +188,6 @@ $(document).ready(function(){
 	}
 
 	function sweetAlertMappa(hotel){
-		console.log(hotel)
 		Swal.fire({
 			title: `<h3>${hotel["nomeHotel"]}</h3>`,
 			showCloseButton: true,
@@ -250,7 +248,6 @@ $(document).ready(function(){
 		rq.catch(errore)
 		rq.then(function({data}){
 			data.forEach(function(item){
-				console.log(item)
 				let divEsterno = $("<div>").css({
 					"background-color": "rgba(255, 255, 255, 0.8)",
 					"border-radius": "10px",
@@ -262,14 +259,16 @@ $(document).ready(function(){
 				rq = inviaRichiesta("GET", "server/getUtente.php", {"codUtente": item["codUtente"]})
 				rq.catch(errore)
 				rq.then(function({data}){
-					console.log(data)
-					$("<img>").prop("src", "img/utenti/"+data[0]["imgProfilo"]).css({"width": "40px", "border-radius": "50%"}).appendTo(h4)
+					$("<img>").prop("src", "img/utenti/" + data[0]["imgProfilo"]).css({"width": "40px", "border-radius": "50%"}).appendTo(h4)
+					.on("error", function(){
+						$(this).prop("src", "img/utenti/defaultIMG.png").css({"width": "40px", "border-radius": "50%"}).prependTo(h4)
+					})
 					$("<span>").text(data[0]["username"]).appendTo(h4)
 					for(let i = 0; i < item["stelle"]; i++){
 						$("<img>").prop("src", "img/star.png").css({"margin": "1px", "width": "25px"}).appendTo(h4)
 					}
 					for(let i = item["stelle"]; i < 5; i++){
-						$("<img>").prop("src", "img/vallauriIcon.png").css({"margin": "1px", "width": "25px"}).appendTo(h4)
+						$("<img>").prop("src", "img/greyStar.png").css({"margin": "1px", "width": "25px"}).appendTo(h4)
 					}
 					$("<p>").text(item["testoRecensione"]).appendTo(divInterno)
 				})
