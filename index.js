@@ -111,8 +111,9 @@ $(document).ready(function () {
 	function vediDettagli(hotel) {
 		sezione2.hide()
 		sezione3.show()
-		$("#nomeHotel").text(hotel["nomeHotel"]).css("text-align", "center")
-		$("<h3>").text(hotel["nomeHotel"]).appendTo(sezDettagli)
+		let nHotel = hotel["nomeHotel"]
+		$("#nomeHotel").text("DETTAGLI HOTEL").css("text-align", "center")
+		$("<h3>").text(nHotel.toUpperCase()).appendTo(sezDettagli)
 		$("<p>").text(hotel["indirizzo"] + " - " + hotel["CAP"] + " " + hotel["citta"]).appendTo(sezDettagli)
 		let div1 = $("<div>").appendTo(sezDettagli)
 		let codHotel = hotel["codHotel"]
@@ -126,6 +127,7 @@ $(document).ready(function () {
 		let div2 = $("<div>").appendTo(sezDettagli)
 		$("<p>").text(hotel["descrizione"]).appendTo(div2)
 
+		$("<h3>").text("CARATTERISTICHE").appendTo(div2)
 		$("<b>").text("Wi-Fi ").appendTo(div2)
 		if (hotel["wifi"] == 1) {
 			$("<img>").prop("src", "img/greenCheck.png").css({ "width": "20px", "height": "20px" }).appendTo(div2)
@@ -171,18 +173,33 @@ $(document).ready(function () {
 			$("<img>").prop("src", "img/redCheck.png").css({ "width": "20px", "height": "20px" }).appendTo(div2)
 			$("<br>").appendTo(div2)
 		}
+		$("<br>").appendTo(div2)
+
+		let singoleLibere = hotel["stanzeSingole"] - hotel["singolePrenotate"]
+		let doppieLibere = hotel["stanzeDoppie"] - hotel["doppiePrenotate"]
+		let tripleLibere = hotel["stanzeTriple"] - hotel["triplePrenotate"]
+		let quadrupleLibere =  hotel["stanzeQuadruple"] - hotel["quadruplePrenotate"]
+		let suitesLibere = hotel["suites"] - hotel["suitesPrenotate"]
+
+		$("<h3>").text("STANZE DISPONIBILI").appendTo(div2)
+		$("<p>").text("Stanze singole: " + singoleLibere + "/" + hotel["stanzeSingole"]).appendTo(div2)
+		$("<p>").text("Stanze doppie: " + doppieLibere + "/" + hotel["stanzeDoppie"]).appendTo(div2)
+		$("<p>").text("Stanze triple: " + tripleLibere + "/" + hotel["stanzeTriple"]).appendTo(div2)
+		$("<p>").text("Stanze quadruple: " + quadrupleLibere + "/" + hotel["stanzeQuadruple"]).appendTo(div2)
+		$("<p>").text("Stanze suites: " + suitesLibere + "/" + hotel["suites"]).appendTo(div2)
+		$("<br>").appendTo(div2)
 
 		rq = inviaRichiesta("GET", "server/getTariffe.php", { codHotel })
 		rq.catch(errore)
 		rq.then(function (response) {
 			if (response.data.length != 0) {
-				$("<br>").appendTo(div2)
-				$("<h3>").text("Tariffe").appendTo(div2)
+				$("<h3>").text("TARIFFE").appendTo(div2)
 				response.data.forEach(tariffa => {
-					$("<p>").text("dal " + tariffa["dataInizio"] + " al " + tariffa["dataFine"] + " al prezzo di " + tariffa["prezzo"] + "€").appendTo(div2)
+					$("<p>").text("Dal " + tariffa["dataInizio"] + " al " + tariffa["dataFine"] + " al prezzo di " + tariffa["prezzo"] + "€").appendTo(div2)
 				});
 			}
 		})
+
 	}
 
 	function sweetAlertMappa(hotel) {
@@ -350,6 +367,6 @@ $(document).ready(function () {
 	})
 
 	btnPrenota.on("click", function () {
-		alert("prenota")
+		console.log("prenota")
 	})
 });
