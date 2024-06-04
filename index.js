@@ -10,6 +10,7 @@ $(document).ready(function(){
 	let sezCitta = $(".citta")
 	let sezHotel = $(".hotel")
 	let sezDettagli = $(".dettagli")
+	let sezRecensioni = $(".recensioni")
 
 	let inputDataInizio = $("#inputDataInizio")
 	let inputDataFine = $("#inputDataFine")
@@ -95,7 +96,7 @@ $(document).ready(function(){
 						.on("click", function(){ vediDettagli(hotel) }).appendTo(divInterno)
 
 						$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-primary").text("Recensioni")
-						.on("click", function(){ alert("recensioni") }).appendTo(divInterno)
+						.on("click", function(){ stampaRecensioni(hotel) }).appendTo(divInterno)
 
 						$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-info").text("Location")
 						.on("click", async function(){ await sweetAlertMappa(hotel) }).appendTo(divInterno)
@@ -239,6 +240,34 @@ $(document).ready(function(){
 				});
 			},
 			background: "rgba(255, 255, 255, 0.98)"
+		})
+	}
+
+	function stampaRecensioni(hotel){
+		sezCitta.hide()
+		sezHotel.hide()
+		let rq = inviaRichiesta("GET", "server/getRecensioni.php", {"codHotel": hotel["codHotel"]})
+		rq.catch(errore)
+		rq.then(function({data}){
+			data.forEach(function(item){
+				console.log(item)
+				let divEsterno = $("<div>").css({
+					"background-color": "rgba(255, 255, 255, 0.8)",
+					"border-radius": "10px",
+					"padding": "5px",
+					"margin": "5px"
+				}).appendTo(sezRecensioni)
+				let divInterno = $("<div>").appendTo(divEsterno)
+				let h4 = $("<h4>").appendTo(divInterno)
+				$("<span>").text(item["codUtente"]).appendTo(h4)
+				for(let i = 0; i < item["stelle"]; i++){
+					$("<img>").prop("src", "img/star.png").css({"margin": "1px", "width": "25px"}).appendTo(h4)
+				}
+				for(let i = item["stelle"]; i < 5; i++){
+					$("<img>").prop("src", "img/greyStar.png").css({"margin": "1px", "width": "25px"}).appendTo(h4)
+				}
+				$("<p>").text(item["testoRecensione"]).appendTo(divInterno)
+			})
 		})
 	}
 
