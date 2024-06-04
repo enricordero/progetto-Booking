@@ -32,7 +32,7 @@
     <!-- ******************* SEZIONE 1 ******************** -->
     <div class="row">
 		<div class="col-sm-12 header">
-			<h1> LE NOSTRE METE NELLE LANGHE </h1>
+			<h1 id="titolone"> LE NOSTRE METE NELLE LANGHE </h1>
 		</div>
 	</div>	
 
@@ -88,14 +88,30 @@
 	</div>
 
 	<!-- ** RECENSIONI ** -->
-	<div class="row" id="sezRecensioni">
-		<div class="col-sm-2 col-md-2"> </div>
-		
+	<div class="row">
 		<div class="col-md-1"> </div>
-		<div class="col-sm-10 col-md-10 recensioni">
+		<div class="col-sm-12 col-md-10 recensioni">
 		    
 	    </div>
-		<div class="col-md-2"> </div>		
+		<div class="col-md-1 "> </div>		
+	</div>
+
+	<!-- ** AGGIUNGI RECENSIONE ** -->
+	<div class="row">
+		<div class="col-md-2"> </div>
+		<div class="col-sm-14 col-md-8 aggiungiRecensione">
+			<img src="img/bookingLogo.png" height="80px">
+			<h2> Aggiungi una recensione </h2>
+			<br>
+			<textarea placeholder="Lascia un messaggio" id="messaggioRecensione" rows="5"> </textarea>
+			<br>
+			<label>Votazione: </label>
+			<input type="number" max="5" min="0" id="stelleRecensione"> <span>/5</span>
+			<br>
+			<button id="btnAnnulla" class="btn btn-primary"> Annulla </button>
+			<button id="btnAggiungiRecensione" class="btn btn-primary"> Conferma </button>
+	    </div>
+		<div class="col-md-2 "> </div>		
 	</div>
 	
   </div>	

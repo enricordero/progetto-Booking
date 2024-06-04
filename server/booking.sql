@@ -276,7 +276,7 @@ CREATE TABLE `recensioni` (
 -- Dump dei dati per la tabella `recensioni`
 --
 
-INSERT INTO `recensioni` (`id`, `codHotel`, `codUtente`, `stelle`, `testoRecensione`, `data`) VALUES
+INSERT INTO `recensioni` (`id`, `codHotel`, `codUtente`, `stelle`, `testoRecensione`, `dataRec`) VALUES
 (1, 1, 4, 5, 'Colazione ottima: varia e con prodotti di qualità. Camera confortevole. Posto molto tranquillo. Personale gentile e premuroso (hanno fatto un regalino a mio figlio e hanno coperto i parabrezza delle auto dei clienti dato le temperature e la brina mattutina).', '2024-06-01 09:53:03'),
 (2, 1, 15, 5, 'L''insieme mi è piaciuto, la camera era ampia, bene arredata con un piccolo giardino. La stanza  decisamente non riscaldata, abbiamo dovuto dormire con un golf.', '2024-06-01 09:53:03'),
 (3, 8, 17, 4, 'Hotel direi molto molto bello!!\r\nParcheggio gratuito.\r\nCamere spaziose e pulite dotate di ogni confort e di una Tv piatta spettacolare dotata di canali sky.\r\nColazione per tutti i gusti.\r\nPersonale gentile e disponibile ', '2024-06-01 09:54:53'),

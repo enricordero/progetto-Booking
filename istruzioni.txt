@@ -1,10 +1,10 @@
-- All’avvio l’utente esegue il login. Per tutti gli utenti presenti nel DB la password è sempre “password” codificata in md5
-- Per i vari hotel fornire anche la geolocalizzazione
-- Visualizzare se l’hotel è dotato di   `suites  `wifi`  `piscina`   `spa`  `colazioneInclusa`  `cenaInclusa` 
+♦ All’avvio l’utente esegue il login. Per tutti gli utenti presenti nel DB la password è sempre “password” codificata in md5
+♦ Per i vari hotel fornire anche la geolocalizzazione
+♦ Visualizzare se l’hotel è dotato di   `suites  `wifi`  `piscina`   `spa`  `colazioneInclusa`  `cenaInclusa` 
 - Visualizzare il n. di camere disponibili (singole, doppie, triple, suites)
 - Definire anche dei filtri di ricerca (ad esempio visualizza solo gli hotel che hanno colazione Inclusa e/o che hanno la piscina)
-- Per l’hotel selezionato visualizzare anche le sue recensioni
-- Dare all’utente corrente la possibilità di inserire una nuova recensione
+♦ Per l’hotel selezionato visualizzare anche le sue recensioni
+♦ Dare all’utente corrente la possibilità di inserire una nuova recensione
 - Dare all’utente corrente la possibilità di effettuare una nuova prenotazione, memorizzando anche il tipo di stanza prenotata 
   (se i viaggiatori sono 2 allora una doppia, se sono 3 allora una tripla, etc. In tutti i casi , indipendentemente da n. di viaggiatori, 
   deve sempre essere possibile prenotare una suite)

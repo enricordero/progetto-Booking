@@ -63,6 +63,40 @@ header div{
 	font-weight:bold;
 }
 
+.recensioni{
+	text-align: center;
+}
+
+.recensioni button{
+	margin: 10px;
+}
+
+.aggiungiRecensione{
+	text-align: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    width: 45%;
+    margin: 10px;
+    padding: 100px;
+}
+
+.aggiungiRecensione h2{
+	margin-top: 40px;
+}
+
+.aggiungiRecensione input{
+	margin: 10px;
+}
+
+.aggiungiRecensione textarea{
+	width: 300px;
+}
+
+.aggiungiRecensione input[type="number"]{
+	text-align: center;
+	width: 50px;
+}
+
 /* ************************************ */
 .hotel>div{
 	border:1px solid #bbb;
