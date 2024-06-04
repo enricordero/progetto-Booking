@@ -259,14 +259,20 @@ $(document).ready(function(){
 				}).appendTo(sezRecensioni)
 				let divInterno = $("<div>").appendTo(divEsterno)
 				let h4 = $("<h4>").appendTo(divInterno)
-				$("<span>").text(item["codUtente"]).appendTo(h4)
-				for(let i = 0; i < item["stelle"]; i++){
-					$("<img>").prop("src", "img/star.png").css({"margin": "1px", "width": "25px"}).appendTo(h4)
-				}
-				for(let i = item["stelle"]; i < 5; i++){
-					$("<img>").prop("src", "img/greyStar.png").css({"margin": "1px", "width": "25px"}).appendTo(h4)
-				}
-				$("<p>").text(item["testoRecensione"]).appendTo(divInterno)
+				rq = inviaRichiesta("GET", "server/getUtente.php", {"codUtente": item["codUtente"]})
+				rq.catch(errore)
+				rq.then(function({data}){
+					console.log(data)
+					$("<img>").prop("src", "img/utenti/"+data[0]["imgProfilo"]).css({"width": "40px", "border-radius": "50%"}).appendTo(h4)
+					$("<span>").text(data[0]["username"]).appendTo(h4)
+					for(let i = 0; i < item["stelle"]; i++){
+						$("<img>").prop("src", "img/star.png").css({"margin": "1px", "width": "25px"}).appendTo(h4)
+					}
+					for(let i = item["stelle"]; i < 5; i++){
+						$("<img>").prop("src", "img/vallauriIcon.png").css({"margin": "1px", "width": "25px"}).appendTo(h4)
+					}
+					$("<p>").text(item["testoRecensione"]).appendTo(divInterno)
+				})
 			})
 		})
 	}
