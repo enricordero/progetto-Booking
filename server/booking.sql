@@ -269,7 +269,7 @@ CREATE TABLE `recensioni` (
   `codUtente` int(11) NOT NULL,
   `stelle` int(11) NOT NULL,
   `testoRecensione` text NOT NULL,
-  `data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `dataRec` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -328,7 +328,7 @@ CREATE TABLE `prenotazioni` (
 INSERT INTO `prenotazioni` ( `id`, `codHotel`, `codUtente`, `dataInizio`, `dataFine`, `nPersone`, `prezzoPerPersona`, `tipoStanza`) VALUES
 (1, 1, 4, '2024-06-01', '2024-06-15', 3, 90, 'tripla'),
 (2, 3, 4, '2024-05-01', '2024-05-15', 1, 85, 'singola');
-
+ 
 -- --------------------------------------------------------
 
 --

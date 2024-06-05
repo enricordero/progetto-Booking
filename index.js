@@ -71,40 +71,51 @@ $(document).ready(function () {
 			div.on("click", function () {
 				sezHotel.empty()
 				vetCitta = []
-				let citta = item["citta"]
-				rq = inviaRichiesta("GET", "server/elencoHotel.php", { citta })
-				rq.catch(errore)
-				rq.then(function (response) {
-					response.data.forEach(element => {
-						if (element["citta"] == citta) {
-							vetCitta.push(element)
-						}
-					});
-					vetCitta.forEach(hotel => {
-						let divEsterno = $("<div>").css({
-							"background-color": "rgba(255, 255, 255, 0.85)",
-							"border-radius": "10px",
-						}).appendTo(sezHotel)
-						$("<img>").prop("src", "img/hotels/" + hotel["img"]).css("border-radius", "15px").appendTo(divEsterno)
-						let divInterno = $("<div>").appendTo(divEsterno)
-						let h4 = $("<h4>").appendTo(divInterno)
-						$("<span>").text(hotel["nomeHotel"]).appendTo(h4)
-						for (let i = 0; i < hotel["stelle"]; i++) {
-							$("<img>").prop("src", "img/star.png").css("margin", "1px").appendTo(h4)
-						}
-						$("<p>").text(hotel["descrizione"]).appendTo(divInterno)
-
-						$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-primary").text("Dettagli")
-							.on("click", function () { vediDettagli(hotel) }).appendTo(divInterno)
-
-						$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-primary").text("Recensioni")
-							.on("click", function () { stampaRecensioni(hotel) }).appendTo(divInterno)
-
-						$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-info").text("Location")
-							.on("click", async function () { await sweetAlertMappa(hotel) }).appendTo(divInterno)
-					});
-				})
+				if(utente){
+					let citta = item["citta"]
+					rq = inviaRichiesta("GET", "server/elencoHotel.php", { citta })
+					rq.catch(errore)
+					rq.then(function (response) {
+						response.data.forEach(element => {
+							if (element["citta"] == citta) {
+								vetCitta.push(element)
+							}
+						});
+						vetCitta.forEach(hotel => {
+							let divEsterno = $("<div>").css({
+								"background-color": "rgba(255, 255, 255, 0.85)",
+								"border-radius": "10px",
+							}).appendTo(sezHotel)
+							$("<img>").prop("src", "img/hotels/" + hotel["img"]).css("border-radius", "15px").appendTo(divEsterno)
+							let divInterno = $("<div>").appendTo(divEsterno)
+							let h4 = $("<h4>").appendTo(divInterno)
+							$("<span>").text(hotel["nomeHotel"]).appendTo(h4)
+							for (let i = 0; i < hotel["stelle"]; i++) {
+								$("<img>").prop("src", "img/star.png").css("margin", "1px").appendTo(h4)
+							}
+							$("<p>").text(hotel["descrizione"]).appendTo(divInterno)
+	
+							$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-primary").text("Dettagli")
+								.on("click", function () { vediDettagli(hotel) }).appendTo(divInterno)
+	
+							$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-primary").text("Recensioni")
+								.on("click", function () { stampaRecensioni(hotel) }).appendTo(divInterno)
+	
+							$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-info").text("Location")
+								.on("click", async function () { await sweetAlertMappa(hotel) }).appendTo(divInterno)
+						});
+					})
+				}
+				else{
+					Swal.fire({
+						html: `
+							<h3> Devi eseguire l'accesso prima di visualizzare gli hotel</h3>
+							<img src="img/noRecensione.png" width="200px">
+							`
+					})
+				}
 			})
+
 		});
 	})
 
@@ -127,7 +138,7 @@ $(document).ready(function () {
 		let div2 = $("<div>").appendTo(sezDettagli)
 		$("<p>").text(hotel["descrizione"]).appendTo(div2)
 
-		$("<h3>").text("CARATTERISTICHE").appendTo(div2)
+		$("<h3>").text("SERVIZI DISPONIBILI").appendTo(div2)
 		$("<b>").text("Wi-Fi ").appendTo(div2)
 		if (hotel["wifi"] == 1) {
 			$("<img>").prop("src", "img/greenCheck.png").css({ "width": "20px", "height": "20px" }).appendTo(div2)
@@ -178,7 +189,7 @@ $(document).ready(function () {
 		let singoleLibere = hotel["stanzeSingole"] - hotel["singolePrenotate"]
 		let doppieLibere = hotel["stanzeDoppie"] - hotel["doppiePrenotate"]
 		let tripleLibere = hotel["stanzeTriple"] - hotel["triplePrenotate"]
-		let quadrupleLibere =  hotel["stanzeQuadruple"] - hotel["quadruplePrenotate"]
+		let quadrupleLibere = hotel["stanzeQuadruple"] - hotel["quadruplePrenotate"]
 		let suitesLibere = hotel["suites"] - hotel["suitesPrenotate"]
 
 		$("<h3>").text("STANZE DISPONIBILI").appendTo(div2)
@@ -292,6 +303,10 @@ $(document).ready(function () {
 						$("<img>").prop("src", "img/greyStar.png").css({ "margin": "1px", "width": "25px" }).appendTo(h4)
 					}
 					$("<p>").text(item["testoRecensione"]).appendTo(divInterno)
+					$("<br>").appendTo(divInterno)
+					let dataRecensione = item["dataRec"].substr(0, 10)
+					$("<p>").text(dataRecensione).appendTo(divInterno)
+
 				})
 			})
 			$("<button>").text("Torna agli hotel").addClass("btn btn-primary").appendTo(sezRecensioni)
@@ -339,7 +354,7 @@ $(document).ready(function () {
 						width: '600px',
 						html: `<img src="img/siRecensione.png" width="200px">`,
 						background: "rgba(255, 255, 255, 0.98)",
-					}).then(function() {
+					}).then(function () {
 						stampaRecensioni(hotel)
 					});
 				})
@@ -367,6 +382,8 @@ $(document).ready(function () {
 	})
 
 	btnPrenota.on("click", function () {
-		console.log("prenota")
+		//let codHotel = 
+		let codUtente = utente[0]["codUtente"]
+
 	})
 });
