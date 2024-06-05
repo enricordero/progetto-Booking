@@ -46,12 +46,19 @@ $(document).ready(function(){
             message.show(500)
         }
         else{
-            let rq = inviaRichiesta("GET", "server/register.php", {"username": username2.val(), "password": password2.val(), "citta": citta.val()})
+            let rq = inviaRichiesta("POST", "server/register.php", {"username": username2.val(), "password": CryptoJS.MD5(password2.val()).toString(), "citta": citta.val()})
             rq.catch(errore)
             rq.then(function({data}){
                 if(data.length != 0) {
-                    console.log(data)
-                    //window.location.href = "login.html";
+                    Swal.fire({
+                        html: `
+                        <h3>Registrazione completata!</h3>
+                        <img src="img/siRecensione.png" width="200px">
+                        `
+                    })
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 5000);
                 } else {
                     message.text("Username o password errati!");
                     message.show(500);
@@ -61,6 +68,7 @@ $(document).ready(function(){
     })
 
     $("#registrati").on("click", function(){
+        message.hide()
         $("#loginSection").hide()
         $("#registerSection").show()
     })

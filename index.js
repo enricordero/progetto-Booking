@@ -20,8 +20,6 @@ $(document).ready(function () {
 
 	let btnPrenota = $("#Prenota")
 
-	//TODO: add langhe.jpg as a background
-
 	$("#btnLogin").on("click", function () {
 		window.location.href = "login.html"
 	})
@@ -220,7 +218,7 @@ $(document).ready(function () {
 						<h3> Devi eseguire l'accesso prima di visualizzare gli hotel</h3>
 						<img src="img/noRecensione.png" width="200px">
 						<br>
-						<a href="login.html"> Vai ad accedi→ </a>
+						<a href="login.html"> Accedi → </a>
 						`,
 					showConfirmButton: false,
 				})
@@ -394,10 +392,10 @@ $(document).ready(function () {
 		else{
 			Swal.fire({
 				html: `
-					<h3> Devi eseguire l'accesso prima di visualizzare gli hotel</h3>
+					<h3> Devi eseguire l'accesso prima di aggiungere una recensione!</h3>
 					<img src="img/noRecensione.png" width="200px">
 					<br>
-					<a href="login.html"> Vai ad accedi→ </a>
+					<a href="login.html"> Accedi → </a>
 					`,
 				showConfirmButton: false,
 			})
