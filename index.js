@@ -241,67 +241,74 @@ $(document).ready(function () {
 				let tipoStanza
 
 				if(dataInizio == "" || dataFine == "" || nPersone == ""){
-					alert("Inserire tutti i campi!")
+					Swal.fire({
+						html: `
+							  <h3 style="color: red;">Completare tutti i campi!</h3>
+							  <img src="img/noRecensione.png" width="200px">
+						`,
+					})
 				}
-
-				rq = inviaRichiesta("GET", "server/getPrezzoPerPersona.php", { "dataInizio": inputDataInizio.val(), "codHotel": codHotel })
-				rq.catch(errore)
-				rq.then(function ({ data }) {
-					if(data.length != 0){
-						let prezzoPerPersona = data[data.length - 1]["prezzo"]
-						switch (nPersone) {
-							case "1":
-								tipoStanza = "singola"
-								break;
-							case "2":
-								tipoStanza = "doppia"
-								break;
-							case "3":
-								tipoStanza = "tripla"
-								break;
-							case "4":
-								tipoStanza = "quadrupla"
-								break;
-							case "5":
-								tipoStanza = "suite"
-								break;
-							default:
-								tipoStanza = "Non definito"
-								break;
-							}
-						console.log(codHotel, codUtente, dataInizio, dataFine, nPersone, prezzoPerPersona, tipoStanza)
-						rq = inviaRichiesta("POST", "server/aggiungiPrenotazione.php", {
-							codHotel, codUtente, dataInizio, dataFine, nPersone, prezzoPerPersona, tipoStanza
-						})
-						rq.catch(errore)
-						rq.then(function({data}){
+				else{
+					rq = inviaRichiesta("GET", "server/getPrezzoPerPersona.php", { "dataInizio": inputDataInizio.val(), "codHotel": codHotel })
+					rq.catch(errore)
+					rq.then(function ({ data }) {
+						if(data.length != 0){
+							let prezzoPerPersona = data[data.length - 1]["prezzo"]
+							switch (nPersone) {
+								case "1":
+									tipoStanza = "singola"
+									break;
+								case "2":
+									tipoStanza = "doppia"
+									break;
+								case "3":
+									tipoStanza = "tripla"
+									break;
+								case "4":
+									tipoStanza = "quadrupla"
+									break;
+								case "5":
+									tipoStanza = "suite"
+									break;
+								default:
+									tipoStanza = "Non definito"
+									break;
+								}
+							console.log(codHotel, codUtente, dataInizio, dataFine, nPersone, prezzoPerPersona, tipoStanza)
+							rq = inviaRichiesta("POST", "server/aggiungiPrenotazione.php", {
+								codHotel, codUtente, dataInizio, dataFine, nPersone, prezzoPerPersona, tipoStanza
+							})
+							rq.catch(errore)
+							rq.then(function({data}){
+								Swal.fire({
+									html: `
+										<h3>Prenotazione effettuata</h3><br>
+										<img src="img/siRecensione.png" width="200px">
+										<p>${hotel["nomeHotel"]}</p>
+										<p>Dal ${dataInizio} al ${dataFine}</p>
+										<p>${nPersone} persone</p>
+										<p>${prezzoPerPersona * nPersone * (nGiorni+1)}€</p>
+										`
+								})
+							})
+							rq = inviaRichiesta("POST", "server/decrementaStanzeDisponibili.php", {codHotel, tipoStanza})
+							rq.catch(errore)
+							rq.then(function({data}){
+	
+							})
+						}
+						else{
 							Swal.fire({
 								html: `
-									<h3>Prenotazione effettuata</h3><br>
-									<img src="img/siRecensione.png" width="200px">
-									<p>${hotel["nomeHotel"]}</p>
-									<p>Dal ${dataInizio} al ${dataFine}</p>
-									<p>${nPersone} persone</p>
-									<p>${prezzoPerPersona * nPersone * (nGiorni+1)}€</p>
+									<h3 style="color: red;">Prenotazione non effettuata</h3><br>
+									<img src="img/noRecensione.png" width="200px">
+									<p>Tariffe dell'hotel ${hotel["nomeHotel"]} disponibili</p>
 									`
 							})
-						})
-						rq = inviaRichiesta("POST", "server/decrementaStanzeDisponibili.php", {codHotel, tipoStanza})
-						rq.catch(errore)
-						rq.then(function({data}){
+						}
+					})
+				}
 
-						})
-					}
-					else{
-						Swal.fire({
-							html: `
-								<h3 style="color: red;">Prenotazione non effettuata</h3><br>
-								<img src="img/noRecensione.png" width="200px">
-								<p>Tariffe dell'hotel ${hotel["nomeHotel"]} disponibili</p>
-								`
-						})
-					}
-				})
 			}
 			else {
 				Swal.fire({

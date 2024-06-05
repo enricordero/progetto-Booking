@@ -148,6 +148,7 @@ header div{
 	padding:12px;
 	background-color:#003975;
 	margin-bottom:16px;
+	border: 3px solid rgb(255, 196, 48);
 }
 
 .booking *{
@@ -176,6 +177,7 @@ header div{
 	border: 3px solid rgb(255, 196, 48);
 	background-color:#003975;
 	padding:16px;
+	text-align: center;
 }
 
 .scegliDate > *{
@@ -183,12 +185,13 @@ header div{
 }
 
 .scegliDate span{
-	font-size: 14pt;
+	font-size: 16pt;
 	color: white;
 }
 
 .scegliDate input{
 	width: 80%;
+	font-size: 12pt;
 }
 
 /* ************************************ */
@@ -204,6 +207,7 @@ header div{
 
 .dettagli h3{
 	font-weight:bold;
+	color: #003975;
 }
 .dettagli img{
 	height:160px;
