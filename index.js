@@ -10,8 +10,13 @@ $(document).ready(function () {
 	let sezCitta = $(".citta")
 	let sezHotel = $(".hotel")
 	let sezDettagli = $(".dettagli")
+	let sezBooking = $(".booking")
+	let sezScegliDate = $(".scegliDate")
 	let sezRecensioni = $(".recensioni")
 	let sezAggiungiRecensione = $(".aggiungiRecensione")
+	let sezProfilo = $(".profilo")
+
+	sezProfilo.hide()
 	sezAggiungiRecensione.hide()
 
 	let inputDataInizio = $("#inputDataInizio")
@@ -33,8 +38,14 @@ $(document).ready(function () {
 		$("#nomeUtente").text(utente[0]["username"])
 		if (!utente[0]["imgProfilo"])
 			$("#pfp").prop("src", "img/utenti/defaultIMG.png")
+				.on("click", function () {
+					visualizzaProfilo(utente)
+				})
 		else {
 			$("#pfp").prop("src", "img/utenti/" + utente[0]["imgProfilo"])
+				.on("click", function () {
+					visualizzaProfilo(utente)
+				})
 		}
 	} else {
 		console.log("Dati dell'utente non disponibili")
@@ -69,39 +80,39 @@ $(document).ready(function () {
 			div.on("click", function () {
 				sezHotel.empty()
 				vetCitta = []
-					let citta = item["citta"]
-					rq = inviaRichiesta("GET", "server/elencoHotel.php", { citta })
-					rq.catch(errore)
-					rq.then(function (response) {
-						response.data.forEach(element => {
-							if (element["citta"] == citta) {
-								vetCitta.push(element)
-							}
-						});
-						vetCitta.forEach(hotel => {
-							let divEsterno = $("<div>").css({
-								"background-color": "rgba(255, 255, 255, 0.85)",
-								"border-radius": "10px",
-							}).appendTo(sezHotel)
-							$("<img>").prop("src", "img/hotels/" + hotel["img"]).css("border-radius", "15px").appendTo(divEsterno)
-							let divInterno = $("<div>").appendTo(divEsterno)
-							let h4 = $("<h4>").appendTo(divInterno)
-							$("<span>").text(hotel["nomeHotel"]).appendTo(h4)
-							for (let i = 0; i < hotel["stelle"]; i++) {
-								$("<img>").prop("src", "img/star.png").css("margin", "1px").appendTo(h4)
-							}
-							$("<p>").text(hotel["descrizione"]).appendTo(divInterno)
-	
-							$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-primary").text("Dettagli")
-								.on("click", function () { vediDettagli(hotel) }).appendTo(divInterno)
-	
-							$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-primary").text("Recensioni")
-								.on("click", function () { stampaRecensioni(hotel) }).appendTo(divInterno)
-	
-							$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-info").text("Location")
-								.on("click", async function () { await sweetAlertMappa(hotel) }).appendTo(divInterno)
-						});
-					})
+				let citta = item["citta"]
+				rq = inviaRichiesta("GET", "server/elencoHotel.php", { citta })
+				rq.catch(errore)
+				rq.then(function (response) {
+					response.data.forEach(element => {
+						if (element["citta"] == citta) {
+							vetCitta.push(element)
+						}
+					});
+					vetCitta.forEach(hotel => {
+						let divEsterno = $("<div>").css({
+							"background-color": "rgba(255, 255, 255, 0.85)",
+							"border-radius": "10px",
+						}).appendTo(sezHotel)
+						$("<img>").prop("src", "img/hotels/" + hotel["img"]).css("border-radius", "15px").appendTo(divEsterno)
+						let divInterno = $("<div>").appendTo(divEsterno)
+						let h4 = $("<h4>").appendTo(divInterno)
+						$("<span>").text(hotel["nomeHotel"]).appendTo(h4)
+						for (let i = 0; i < hotel["stelle"]; i++) {
+							$("<img>").prop("src", "img/star.png").css("margin", "1px").appendTo(h4)
+						}
+						$("<p>").text(hotel["descrizione"]).appendTo(divInterno)
+
+						$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-primary").text("Dettagli")
+							.on("click", function () { vediDettagli(hotel) }).appendTo(divInterno)
+
+						$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-primary").text("Recensioni")
+							.on("click", function () { stampaRecensioni(hotel) }).appendTo(divInterno)
+
+						$("<a>").prop("href", "#").css("margin", "5px").addClass("btn btn-info").text("Location")
+							.on("click", function () { sweetAlertMappa(hotel) }).appendTo(divInterno)
+					});
+				})
 			})
 
 		});
@@ -199,23 +210,103 @@ $(document).ready(function () {
 			}
 		})
 
+		let msDataInizio
+		let nGiorni
+
 		inputDataInizio.on("change", function () {
 			inputDataFine.prop("disabled", false)
 			inputDataFine.val(inputDataInizio.val())
 			inputDataFine.prop("min", inputDataInizio.val())
 			
+			msDataInizio = new Date(inputDataInizio.val())
+			console.log(msDataInizio.getTime())
 		})
-	
+
+		inputDataFine.on("change", function(){
+			let msDataFine = new Date(inputDataFine.val())
+			console.log(msDataFine.getTime())
+
+			nGiorni = (msDataFine - msDataInizio) / 86400000
+			console.log(nGiorni)
+		})
+		
+
 		btnPrenota.on("click", function () {
-			if(utente){
+			if (utente) {
 				let codHotel = hotel["codHotel"]
 				let codUtente = utente[0]["codUtente"]
-				console.log(codHotel, codUtente, inputDataInizio.val(), inputDataFine.val())
+				let dataInizio = inputDataInizio.val()
+				let dataFine = inputDataFine.val()
+				let nPersone = txtNumPersone.val()
+				let tipoStanza
+
+				if(dataInizio == "" || dataFine == "" || nPersone == ""){
+					alert("Inserire tutti i campi!")
+				}
+
+				rq = inviaRichiesta("GET", "server/getPrezzoPerPersona.php", { "dataInizio": inputDataInizio.val(), "codHotel": codHotel })
+				rq.catch(errore)
+				rq.then(function ({ data }) {
+					if(data.length != 0){
+						let prezzoPerPersona = data[data.length - 1]["prezzo"]
+						switch (nPersone) {
+							case "1":
+								tipoStanza = "singola"
+								break;
+							case "2":
+								tipoStanza = "doppia"
+								break;
+							case "3":
+								tipoStanza = "tripla"
+								break;
+							case "4":
+								tipoStanza = "quadrupla"
+								break;
+							case "5":
+								tipoStanza = "suite"
+								break;
+							default:
+								tipoStanza = "Non definito"
+								break;
+							}
+						console.log(codHotel, codUtente, dataInizio, dataFine, nPersone, prezzoPerPersona, tipoStanza)
+						rq = inviaRichiesta("POST", "server/aggiungiPrenotazione.php", {
+							codHotel, codUtente, dataInizio, dataFine, nPersone, prezzoPerPersona, tipoStanza
+						})
+						rq.catch(errore)
+						rq.then(function({data}){
+							Swal.fire({
+								html: `
+									<h3>Prenotazione effettuata</h3><br>
+									<img src="img/siRecensione.png" width="200px">
+									<p>${hotel["nomeHotel"]}</p>
+									<p>Dal ${dataInizio} al ${dataFine}</p>
+									<p>${nPersone} persone</p>
+									<p>${prezzoPerPersona * nPersone * (nGiorni+1)}€</p>
+									`
+							})
+						})
+						rq = inviaRichiesta("POST", "server/decrementaStanzeDisponibili.php", {codHotel, tipoStanza})
+						rq.catch(errore)
+						rq.then(function({data}){
+
+						})
+					}
+					else{
+						Swal.fire({
+							html: `
+								<h3 style="color: red;">Prenotazione non effettuata</h3><br>
+								<img src="img/noRecensione.png" width="200px">
+								<p>Tariffe dell'hotel ${hotel["nomeHotel"]} disponibili</p>
+								`
+						})
+					}
+				})
 			}
-			else{
+			else {
 				Swal.fire({
 					html: `
-						<h3> Devi eseguire l'accesso prima di visualizzare gli hotel</h3>
+						<h3> Devi eseguire l'accesso prima di prenotare</h3>
 						<img src="img/noRecensione.png" width="200px">
 						<br>
 						<a href="login.html"> Accedi → </a>
@@ -227,7 +318,8 @@ $(document).ready(function () {
 
 	}
 
-	function sweetAlertMappa(hotel) {
+	async function sweetAlertMappa(hotel) {
+		await caricaGoogleMaps()
 		Swal.fire({
 			title: `<h3>${hotel["nomeHotel"]}</h3>`,
 			showCloseButton: true,
@@ -331,26 +423,26 @@ $(document).ready(function () {
 	}
 
 	function aggiungiRecensione(hotel) {
-		if(utente){
+		if (utente) {
 			let today = new Date();
 			let formattedDate = today.toISOString().split('T')[0];
 			let dataRec = formattedDate + " " + `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
-	
+
 			sezCitta.hide()
 			sezHotel.hide()
 			sezRecensioni.hide()
 			sezAggiungiRecensione.show()
-	
+
 			let messaggioRecensione = $("#messaggioRecensione")
 			let stelleRecensione = $("#stelleRecensione")
 			messaggioRecensione.val("")
 			stelleRecensione.val("")
-	
+
 			$("#btnAnnulla").on("click", function () {
 				sezAggiungiRecensione.hide()
 				sezRecensioni.show()
 			})
-	
+
 			$("#btnAggiungiRecensione").on("click", function () {
 				if (stelleRecensione.val() != "") {
 					let rq = inviaRichiesta("POST", "server/aggiungiRecensione.php", {
@@ -389,7 +481,7 @@ $(document).ready(function () {
 				}
 			})
 		}
-		else{
+		else {
 			Swal.fire({
 				html: `
 					<h3> Devi eseguire l'accesso prima di aggiungere una recensione!</h3>
@@ -400,5 +492,37 @@ $(document).ready(function () {
 				showConfirmButton: false,
 			})
 		}
+	}
+
+	function visualizzaProfilo(utente) {
+		sezCitta.hide()
+		sezHotel.hide()
+		sezBooking.hide()
+		sezDettagli.hide()
+		sezScegliDate.hide()
+		sezRecensioni.hide()
+		sezAggiungiRecensione.hide()
+		sezProfilo.empty()
+		sezProfilo.show()
+
+		$("#titolone").text("PROFILO")
+		if (utente[0]["imgProfilo"] || utente[0]["imgProfilo"] == null) {
+			$("<img>").prop("src", "img/utenti/" + utente[0]["imgProfilo"]).css({
+				"width": "200px",
+				"border-radius": "50%"
+			}).appendTo(sezProfilo)
+		}
+		else {
+			$("<img>").prop("src", "img/utenti/defaultIMG.png").css({
+				"width": "200px",
+				"border-radius": "50%"
+			}).appendTo(sezProfilo)
+		}
+		$("<h4>").text(utente[0]["username"]).appendTo(sezProfilo)
+		$("<p>").html("<b>Città:</b> " + utente[0]["citta"]).appendTo(sezProfilo)
+		$("<button>").text("Logout").addClass("btn btn-info").appendTo(sezProfilo)
+			.on("click", function () {
+				window.location.href = "login.html"
+			})
 	}
 });

@@ -1,16 +1,16 @@
 ♦ All’avvio l’utente esegue il login. Per tutti gli utenti presenti nel DB la password è sempre “password” codificata in md5
 ♦ Per i vari hotel fornire anche la geolocalizzazione
 ♦ Visualizzare se l’hotel è dotato di   `suites  `wifi`  `piscina`   `spa`  `colazioneInclusa`  `cenaInclusa` 
-- Visualizzare il n. di camere disponibili (singole, doppie, triple, suites)
-- Definire anche dei filtri di ricerca (ad esempio visualizza solo gli hotel che hanno colazione Inclusa e/o che hanno la piscina)
+♦ Visualizzare il n. di camere disponibili (singole, doppie, triple, suites)
+♦ Definire anche dei filtri di ricerca (ad esempio visualizza solo gli hotel che hanno colazione Inclusa e/o che hanno la piscina)
 ♦ Per l’hotel selezionato visualizzare anche le sue recensioni
 ♦ Dare all’utente corrente la possibilità di inserire una nuova recensione
-- Dare all’utente corrente la possibilità di effettuare una nuova prenotazione, memorizzando anche il tipo di stanza prenotata 
+♦ Dare all’utente corrente la possibilità di effettuare una nuova prenotazione, memorizzando anche il tipo di stanza prenotata 
   (se i viaggiatori sono 2 allora una doppia, se sono 3 allora una tripla, etc. In tutti i casi , indipendentemente da n. di viaggiatori, 
   deve sempre essere possibile prenotare una suite)
-- Per quanto riguarda il costo giornaliero della prenotazione, tutti i giorni avranno lo stesso prezzo pari al prezzo del primo giorno, 
+♦ Per quanto riguarda il costo giornaliero della prenotazione, tutti i giorni avranno lo stesso prezzo pari al prezzo del primo giorno, 
   esattamente come nella verifica
-- Prima di accettare la prenotazione verificare che il numero di camere (es doppie) prenotate sia inferiore al numero di camere (sempre doppie) 
+♦ Prima di accettare la prenotazione verificare che il numero di camere (es doppie) prenotate sia inferiore al numero di camere (sempre doppie) 
   disponibili
--Dopo aver accettato la prenotazione incrementare di 1 il n. di camere di quel tipo occupate e visualizzare il totale da pagare 
+♦ Dopo aver accettato la prenotazione incrementare di 1 il n. di camere di quel tipo occupate e visualizzare il totale da pagare 
   (n. viaggiatori * prezzoGiornaliero * n giorni)
