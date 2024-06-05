@@ -71,7 +71,6 @@ $(document).ready(function () {
 			div.on("click", function () {
 				sezHotel.empty()
 				vetCitta = []
-				if(utente){
 					let citta = item["citta"]
 					rq = inviaRichiesta("GET", "server/elencoHotel.php", { citta })
 					rq.catch(errore)
@@ -105,15 +104,6 @@ $(document).ready(function () {
 								.on("click", async function () { await sweetAlertMappa(hotel) }).appendTo(divInterno)
 						});
 					})
-				}
-				else{
-					Swal.fire({
-						html: `
-							<h3> Devi eseguire l'accesso prima di visualizzare gli hotel</h3>
-							<img src="img/noRecensione.png" width="200px">
-							`
-					})
-				}
 			})
 
 		});
@@ -208,6 +198,32 @@ $(document).ready(function () {
 				response.data.forEach(tariffa => {
 					$("<p>").text("Dal " + tariffa["dataInizio"] + " al " + tariffa["dataFine"] + " al prezzo di " + tariffa["prezzo"] + "€").appendTo(div2)
 				});
+			}
+		})
+
+		inputDataInizio.on("change", function () {
+			inputDataFine.prop("disabled", false)
+			inputDataFine.val(inputDataInizio.val())
+			inputDataFine.prop("min", inputDataInizio.val())
+			
+		})
+	
+		btnPrenota.on("click", function () {
+			if(utente){
+				let codHotel = hotel["codHotel"]
+				let codUtente = utente[0]["codUtente"]
+				console.log(codHotel, codUtente, inputDataInizio.val(), inputDataFine.val())
+			}
+			else{
+				Swal.fire({
+					html: `
+						<h3> Devi eseguire l'accesso prima di visualizzare gli hotel</h3>
+						<img src="img/noRecensione.png" width="200px">
+						<br>
+						<a href="login.html"> Vai ad accedi→ </a>
+						`,
+					showConfirmButton: false,
+				})
 			}
 		})
 
@@ -317,73 +333,74 @@ $(document).ready(function () {
 	}
 
 	function aggiungiRecensione(hotel) {
-		let today = new Date();
-		let formattedDate = today.toISOString().split('T')[0];
-		let dataRec = formattedDate + " " + `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
-
-		sezCitta.hide()
-		sezHotel.hide()
-		sezRecensioni.hide()
-		sezAggiungiRecensione.show()
-
-		let messaggioRecensione = $("#messaggioRecensione")
-		let stelleRecensione = $("#stelleRecensione")
-		messaggioRecensione.val("")
-		stelleRecensione.val("")
-
-		$("#btnAnnulla").on("click", function () {
-			sezAggiungiRecensione.hide()
-			sezRecensioni.show()
-		})
-
-		$("#btnAggiungiRecensione").on("click", function () {
-			if (stelleRecensione.val() != "") {
-				let rq = inviaRichiesta("POST", "server/aggiungiRecensione.php", {
-					"codHotel": hotel["codHotel"],
-					"codUtente": utente[0]["codUtente"],
-					"stelle": stelleRecensione.val(),
-					"testoRecensione": messaggioRecensione.val(),
-					"dataRec": dataRec
-				})
-				rq.catch(errore)
-				rq.then(function ({ data }) {
+		if(utente){
+			let today = new Date();
+			let formattedDate = today.toISOString().split('T')[0];
+			let dataRec = formattedDate + " " + `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
+	
+			sezCitta.hide()
+			sezHotel.hide()
+			sezRecensioni.hide()
+			sezAggiungiRecensione.show()
+	
+			let messaggioRecensione = $("#messaggioRecensione")
+			let stelleRecensione = $("#stelleRecensione")
+			messaggioRecensione.val("")
+			stelleRecensione.val("")
+	
+			$("#btnAnnulla").on("click", function () {
+				sezAggiungiRecensione.hide()
+				sezRecensioni.show()
+			})
+	
+			$("#btnAggiungiRecensione").on("click", function () {
+				if (stelleRecensione.val() != "") {
+					let rq = inviaRichiesta("POST", "server/aggiungiRecensione.php", {
+						"codHotel": hotel["codHotel"],
+						"codUtente": utente[0]["codUtente"],
+						"stelle": stelleRecensione.val(),
+						"testoRecensione": messaggioRecensione.val(),
+						"dataRec": dataRec
+					})
+					rq.catch(errore)
+					rq.then(function ({ data }) {
+						Swal.fire({
+							title: `<h3 style="color: green; font-weight: bold;">Recensione aggiunta con successo!</h3>`,
+							showCloseButton: true,
+							showConfirmButton: true,
+							width: '600px',
+							html: `<img src="img/siRecensione.png" width="200px">`,
+							background: "rgba(255, 255, 255, 0.98)",
+						}).then(function () {
+							stampaRecensioni(hotel)
+						});
+					})
+				}
+				else {
 					Swal.fire({
-						title: `<h3 style="color: green; font-weight: bold;">Recensione aggiunta con successo!</h3>`,
+						title: `<h3 style="color: red; font-weight: bold;">La tua recensione non è stata aggiunta!</h3>`,
 						showCloseButton: true,
 						showConfirmButton: true,
 						width: '600px',
-						html: `<img src="img/siRecensione.png" width="200px">`,
+						html: `
+						<p> La valutazione è obbligatoria per lasciare una recensione </p>
+						<img src="img/noRecensione.png" width="200px">
+						`,
 						background: "rgba(255, 255, 255, 0.98)",
-					}).then(function () {
-						stampaRecensioni(hotel)
-					});
-				})
-			}
-			else {
-				Swal.fire({
-					title: `<h3 style="color: red; font-weight: bold;">La tua recensione non è stata aggiunta!</h3>`,
-					showCloseButton: true,
-					showConfirmButton: true,
-					width: '600px',
-					html: `
-					<p> La valutazione è obbligatoria per lasciare una recensione </p>
+					})
+				}
+			})
+		}
+		else{
+			Swal.fire({
+				html: `
+					<h3> Devi eseguire l'accesso prima di visualizzare gli hotel</h3>
 					<img src="img/noRecensione.png" width="200px">
+					<br>
+					<a href="login.html"> Vai ad accedi→ </a>
 					`,
-					background: "rgba(255, 255, 255, 0.98)",
-				})
-			}
-		})
+				showConfirmButton: false,
+			})
+		}
 	}
-
-	inputDataInizio.on("change", function () {
-		inputDataFine.prop("disabled", false)
-		inputDataFine.val(inputDataInizio.val())
-		inputDataFine.prop("min", inputDataInizio.val())
-	})
-
-	btnPrenota.on("click", function () {
-		//let codHotel = 
-		let codUtente = utente[0]["codUtente"]
-
-	})
 });
